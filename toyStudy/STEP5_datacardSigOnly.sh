@@ -7,11 +7,16 @@ do
         for fs in 4mu 4e 2e2mu
         do 
             sed -i "/observation/c\observation -1" hzz4l_${fs}S_13TeV.txt
-            yields=`grep "rate" hzz4l_${fs}S_13TeV.txt | awk -F " " '$7=$8=$9="0.0000000036"'`
-            echo ${yields}
-            sed -i "s/^rate.*/$yields/g" hzz4l_${fs}S_13TeV.txt
+#            yields=`grep "rate" hzz4l_${fs}S_13TeV.txt | awk -F " " '$7=$8=$9="0.0000000036"'`
+#            echo ${yields}
+#            sed -i "s/^rate.*/$yields/g" hzz4l_${fs}S_13TeV.txt
             combineCards.py hzz4l_13TeV_4mu=hzz4l_4muS_13TeV.txt hzz4l_13TeV_4e=hzz4l_4eS_13TeV.txt hzz4l_13TeV_2e2mu=hzz4l_2e2muS_13TeV.txt  > hzz4l_allS_13TeV.txt
         done
         cd -
     done
 done
+
+cp /scratch/osg/mhl/Run2/HZZ4L/PereventMassErrCorr_2016ICHEP/getCorrection_ICHEP2016/toyStudy_test/code/runMutipleCombine.py ../STEP4_getMass_asimov/
+cp /scratch/osg/mhl/Run2/HZZ4L/PereventMassErrCorr_2016ICHEP/getCorrection_ICHEP2016/toyStudy_test/code/runAsimov.sh ../STEP4_getMass_asimov/
+cp /scratch/osg/mhl/Run2/HZZ4L/PereventMassErrCorr_2016ICHEP/getCorrection_ICHEP2016/toyStudy_test/code/getAverage.py ../STEP4_getMass_asimov/
+mkdir ../STEP4_getMass_asimov/savedLog

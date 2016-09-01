@@ -133,8 +133,8 @@ def mergeToys(indir,outdir,m4ltype,fs,proc):
 
 for fs in ["4mu","4e","2e2mu"]:
     for m4ltype in ["1D_reco", "1D_refit", "1Debe_reco", "1Debe_refit"]:
-#        mergeToys("../Toys_BkgSmear1pct4mu_FixShape_FixZX",m4ltype,fs,"all")
-        mergeToys("../STEP2_Toys_BkgSmear1pct4mu_FixShape_FixZX","../STEP3_mergedToys_BkgSmear1pct4mu_FixShape_FixZX", m4ltype,fs,"all")
+        for process in ['QQZZ', 'ZX']:#, 'all', 'sig']:
+            mergeToys("../STEP2_Toys_BkgSmear1pct4mu_FixShape_FixZX","../STEP3_mergedToys_BkgSmear1pct4mu_FixShape_FixZX", m4ltype,fs,process)
 
 #mergeToys("../Toys_BkgSmear1pct4mu_FixShape_FixZX","reco","4mu","all")
 #mergeToys("../Toys_BkgSmear1pct4mu_FixShape_FixZX","reco","4e","all")

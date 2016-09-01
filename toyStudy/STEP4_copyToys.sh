@@ -24,7 +24,8 @@ do
     for fs in 4e 4mu 2e2mu
     do
 
-    cp ${inputDIR}hzz4l_${fs}S_13TeV_${m4ltype}_withSigToys.input.root ${outputDIR}cards_sm13_${m4ltype}_2p7fb_CB/HCG/125/hzz4l_${fs}S_13TeV.input.root
+    cp ${inputDIR}hzz4l_${fs}S_13TeV_${m4ltype}_withToys.input.root ${outputDIR}cards_sm13_${m4ltype}_2p7fb_CB/HCG/125/hzz4l_${fs}S_13TeV.input.root
+#    cp ${inputDIR}hzz4l_${fs}S_13TeV_${m4ltype}_withSigToys.input.root ${outputDIR}cards_sm13_${m4ltype}_2p7fb_CB/HCG/125/hzz4l_${fs}S_13TeV.input.root
     cp runToys.py ${outputDIR}cards_sm13_${m4ltype}_2p7fb_CB/HCG/125/
     cp runAllToys.sh ${outputDIR}cards_sm13_${m4ltype}_2p7fb_CB/HCG/125/
 

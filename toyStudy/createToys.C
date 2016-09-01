@@ -28,7 +28,7 @@
 using namespace RooFit ;
 
 
-void createToys(TString filename, int fs, float nexp, int isZX=0, int refit=0, TString outputDIR="")
+void createToys(TString filename, int fs, float nexp, int isZX=0, int refit=0, int doSmear=0, TString outputDIR="")
 {
 
 
@@ -138,25 +138,32 @@ void createToys(TString filename, int fs, float nexp, int isZX=0, int refit=0, T
                 if (isZX && !(passedZXCRSelection && nZXCRFailedLeptons==2)) continue;
 
                 float smearmass; float smearmasserr; float masserr_orig;
-                if (!refit) {
+                if (!refit && doSmear) {
                     smearmass = std::max(0.0,mass4l+rand3.Gaus(0.0,0.05*mass4l));
                     float errsmear=0.05;
                     if (fs==1 && !isZX) errsmear=0.01;
                     smearmasserr = std::max(0.0,mass4lErr+rand3.Gaus(0.0,errsmear*mass4lErr));
+
+                    mass4l = smearmass;
+                    mass4lErr = smearmasserr;
                     //smearmass = mass4l;
                     //smearmasserr = mass4lErr;
-                } else {
+                } else if (refit && doSmear) {
                     smearmass = std::max(0.0,mass4lREFIT+rand3.Gaus(0.0,0.05*mass4lREFIT));
                     float errsmear=0.05;
                     if (fs==1 && !isZX) errsmear=0.01;
                     smearmasserr = std::max(0.0,mass4lErrREFIT+rand3.Gaus(0.0,errsmear*mass4lErrREFIT));
                     //smearmass = mass4lREFIT;
                     //smearmasserr = mass4lErrREFIT;
+                    mass4lREFIT = smearmass;
+                    mass4lErrREFIT = smearmasserr;
                 }
 
                 //cout<<"mass4l: "<<mass4l<<" smearmass: "<<smearmass<<endl;
-                if (!(smearmass>105.0 && smearmass<140.0)) continue;
-                if ( (smearmasserr/smearmass)>0.1) continue;
+                if (!(mass4l>105.0 && mass4l<140.0) && !refit) continue;
+                if ( (mass4lErr/mass4l)>0.1 && !refit) continue;
+                if (!(mass4lREFIT>105.0 && mass4lREFIT<140.0) && refit) continue;
+                if ( (mass4lErrREFIT/mass4lREFIT)>0.1 && refit) continue;
 
                 bool correctFS=false;
                 if (fs==1 && abs(idL1)==13 && abs(idL3)==13) correctFS=true;
@@ -166,12 +173,12 @@ void createToys(TString filename, int fs, float nexp, int isZX=0, int refit=0, T
                 
                 npass+=1;
                 if (refit) {
-                    CMS_zz4l_mass=smearmass; 
-                    CMS_zz4l_massErr=(smearmasserr/smearmass);
+                    CMS_zz4l_mass=mass4lREFIT; 
+                    CMS_zz4l_massErr=mass4lErrREFIT/mass4lREFIT;
                 }
                 else {
-                    CMS_zz4l_mass=smearmass; 
-                    CMS_zz4l_massErr=smearmasserr/smearmass;
+                    CMS_zz4l_mass=mass4l; 
+                    CMS_zz4l_massErr=mass4lErr/mass4l;
                     //cout<<"toy "<<toyn<<" mass: "<<CMS_zz4l_mass.getVal()<<" massErr: "<<CMS_zz4l_massErr.getVal()<<endl;
                 }
                 toy->add(RooArgSet(CMS_zz4l_mass,CMS_zz4l_massErr));
